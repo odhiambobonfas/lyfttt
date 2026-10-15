@@ -2,20 +2,12 @@ import React, { useState } from "react";
 
 export default function GiftCardReveal({
   brand = "Saks Fifth Avenue",
-  amount = 100.0,
-  currency = "USD",
   cardNumber = "6366400057525005",
   pin = "3612",
   asOf = new Date(),
-  balanceUrl = "#",
   message = "Enjoy this reward — just for you!",
 }) {
   const [copied, setCopied] = useState({ number: false, pin: false });
-
-  const formattedAmount = new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(amount);
 
   const formattedDate = new Intl.DateTimeFormat("en-US", {
     month: "long",
@@ -30,15 +22,11 @@ export default function GiftCardReveal({
       await navigator.clipboard.writeText(value.replace(/\s/g, ""));
       setCopied((prev) => ({ ...prev, [key]: true }));
       setTimeout(() => setCopied((prev) => ({ ...prev, [key]: false })), 1800);
-    } catch (_) {
-      // Clipboard unavailable — fail silently
-    }
+    } catch (_) {}
   };
 
   return (
     <div className="card-shell">
-
-      {/* ── Header: logo on black ── */}
       <div className="card-header">
         <div className="saks-logo-wrap">
           <img src="/logo.jpg" alt="Saks Fifth Avenue" className="header-logo" />
@@ -46,19 +34,9 @@ export default function GiftCardReveal({
         <p className="header-brand">GIFT CARD</p>
       </div>
 
-      {/* ── Perforation seam ── */}
       <div className="seam" />
 
-      {/* ── Body ── */}
       <div className="card-body">
-
-        {/* Amount */}
-        <div className="amount-section">
-          <p className="amount-value">${formattedAmount}</p>
-          <p className="amount-currency">{currency}</p>
-        </div>
-
-        {/* Balance date only */}
         <div className="balance-section">
           <p className="balance-date">Balance as of {formattedDate}</p>
           <p className="balance-note">
@@ -66,7 +44,6 @@ export default function GiftCardReveal({
           </p>
         </div>
 
-        {/* Copy rows */}
         <div className="copy-rows">
           <CopyRow
             label="Gift Card Number"
@@ -82,11 +59,9 @@ export default function GiftCardReveal({
           />
         </div>
 
-        {/* Message */}
         <div className="card-message">
           <p>{message}</p>
         </div>
-
       </div>
     </div>
   );
